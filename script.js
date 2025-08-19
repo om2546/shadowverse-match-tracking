@@ -215,7 +215,13 @@ $(document).ready(async function () {
     let selectedTurnOrder = null;
     let selectedResult = 'win'; 
     let selectedExpansion = expansionList[expansionList.length - 1]; 
-    let selectedGroup = data != [] ? data[0].groupList : groupList[0];
+    let selectedGroup = null;
+    try{
+        selectedGroup = data[0].groupList;
+    }
+    catch(e){
+        selectedGroup = groupList[0];
+    }
     function renderGroupListRadios(selectedVal) {
         const $container = $('#groupListRadios');
         $container.empty();
