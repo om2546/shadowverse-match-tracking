@@ -387,7 +387,7 @@ $(document).ready(async function () {
     });
 
     // Export to JSON button handler
-    $('#exportJsonBtn').on('click', function () {
+    $('#exportJsonInput').on('click', function () {
         // Remove any IndexedDB id property before export
         const exportData = data.map(({ id, ...rest }) => rest);
         const json = JSON.stringify(exportData, null, 2);
