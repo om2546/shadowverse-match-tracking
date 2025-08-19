@@ -9,8 +9,14 @@ class StatsApp {
     constructor() {
         this.db = new DatabaseService();
         this.data = [];
+        this.filteredData = [];
         this.showCounts = false; // false = winrate, true = counts
         this.table = null;
+        this.filters = {
+            turnOrder: [],
+            group: [],
+            expansion: []
+        };
     }
 
     /**
@@ -19,6 +25,8 @@ class StatsApp {
     async init() {
         try {
             await this.loadData();
+            this.renderFilterOptions();
+            this.applyFilters();
             this.renderTable();
             this.setupEventListeners();
         } catch (error) {
@@ -37,6 +45,74 @@ class StatsApp {
             console.error('Failed to load data:', error);
             this.data = [];
         }
+    }
+
+    /**
+     * Renders filter options dynamically from config
+     */
+    renderFilterOptions() {
+        // Render Turn Order checkboxes
+        const $turnOrderContainer = $('#turnOrderFilter');
+        $turnOrderContainer.empty();
+        GAME_DATA.TURN_ORDERS.forEach(option => {
+            const checkbox = `
+                <label class="filter-label">
+                    <input type="checkbox" class="filter-checkbox turn-order-checkbox" value="${option.value}">
+                    <span>${option.label}</span>
+                </label>
+            `;
+            $turnOrderContainer.append(checkbox);
+        });
+
+        // Render Group checkboxes
+        const $groupContainer = $('#groupFilter');
+        $groupContainer.empty();
+        GAME_DATA.GROUPS.forEach(group => {
+            const checkbox = `
+                <label class="filter-label">
+                    <input type="checkbox" class="filter-checkbox group-checkbox" value="${group}">
+                    <span>${group}</span>
+                </label>
+            `;
+            $groupContainer.append(checkbox);
+        });
+
+        // Render Expansion checkboxes
+        const $expansionContainer = $('#expansionFilter');
+        $expansionContainer.empty();
+        GAME_DATA.EXPANSIONS.forEach(expansion => {
+            const checkbox = `
+                <label class="filter-label">
+                    <input type="checkbox" class="filter-checkbox expansion-checkbox" value="${expansion}">
+                    <span>${expansion}</span>
+                </label>
+            `;
+            $expansionContainer.append(checkbox);
+        });
+    }
+
+    /**
+     * Applies current filters to the data
+     */
+    applyFilters() {
+        this.filteredData = this.data.filter(game => {
+            // Turn Order filter
+            if (this.filters.turnOrder.length > 0 && !this.filters.turnOrder.includes(game.turnOrder)) {
+                return false;
+            }
+            
+            // Group filter
+            if (this.filters.group.length > 0 && !this.filters.group.includes(game.groupList)) {
+                return false;
+            }
+            
+            // Expansion filter
+            if (this.filters.expansion.length > 0 && !this.filters.expansion.includes(game.gameExpansion)) {
+                return false;
+            }
+            
+            return true;
+        });
     }
 
     /**
@@ -90,12 +166,12 @@ class StatsApp {
             $('#statTable').empty();
         }
 
-        if (this.data.length === 0) {
+        if (this.filteredData.length === 0) {
             this.renderEmptyTable();
             return;
         }
 
-        const winRateData = this.calculateWinRates(this.data);
+        const winRateData = this.calculateWinRates(this.filteredData);
         
         this.table = new DataTable('#statTable', {
             searching: false,
@@ -198,11 +274,56 @@ class StatsApp {
     }
 
     /**
+     * Handles filter application
+     */
+    handleApplyFilters() {
+        // Get checked values from checkboxes
+        this.filters.turnOrder = $('.turn-order-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+        
+        this.filters.group = $('.group-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+        
+        this.filters.expansion = $('.expansion-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+        
+        this.applyFilters();
+        this.renderTable();
+    }
+
+    /**
+     * Clears all filters
+     */
+    handleClearFilters() {
+        // Clear all filter arrays
+        this.filters.turnOrder = [];
+        this.filters.group = [];
+        this.filters.expansion = [];
+        
+        // Uncheck all checkboxes
+        $('.filter-checkbox').prop('checked', false);
+        
+        this.applyFilters();
+        this.renderTable();
+    }
+
+    /**
      * Sets up event listeners
      */
     setupEventListeners() {
         $('#toggleViewBtn').on('click', () => {
             this.toggleView();
+        });
+
+        $('#applyFiltersBtn').on('click', () => {
+            this.handleApplyFilters();
+        });
+
+        $('#clearFiltersBtn').on('click', () => {
+            this.handleClearFilters();
         });
     }
 }
