@@ -121,7 +121,7 @@ $(document).ready(async function () {
 
     const table = new DataTable('#data', {
         searching: false,
-        // order: [[3, 'desc']],
+        order: [], // Disable initial ordering
         data: data,
         columns: [
             { 
