@@ -74,6 +74,7 @@ function openDB() {
 }
 
 function saveDataToIndexedDB(dataArr) {
+    dataArr.sort((a, b) => b.timeStamps - a.timeStamps);
     openDB().then(db => {
         const tx = db.transaction(DB_STORE, 'readwrite');
         const store = tx.objectStore(DB_STORE);
@@ -120,7 +121,7 @@ $(document).ready(async function () {
 
     const table = new DataTable('#data', {
         searching: false,
-        order: [[3, 'desc']],
+        // order: [[3, 'desc']],
         data: data,
         columns: [
             { 
@@ -214,8 +215,7 @@ $(document).ready(async function () {
     let selectedTurnOrder = null;
     let selectedResult = 'win'; 
     let selectedExpansion = expansionList[expansionList.length - 1]; 
-    let selectedGroup = data[data.length - 1].groupList;
-
+    let selectedGroup = data != [] ? data[0].groupList : groupList[0];
     function renderGroupListRadios(selectedVal) {
         const $container = $('#groupListRadios');
         $container.empty();
