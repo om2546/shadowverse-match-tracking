@@ -36,7 +36,6 @@ class MatchTracker {
             this.initializeFormDefaults();
             this.renderUI();
             this.updateWinRate();
-            console.log(this.data);
         } catch (error) {
             console.error('Failed to initialize application:', error);
             this.handleError(error);
