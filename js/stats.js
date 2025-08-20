@@ -173,6 +173,9 @@ class StatsApp {
             this.renderEmptyTable();
             return;
         }
+        else {
+            this.removeEmptyTableMessage();
+        }
 
         const winRateData = this.calculateWinRates(this.filteredData);
         
@@ -261,6 +264,13 @@ class StatsApp {
     renderEmptyTable() {
         $('#statTable').html('<tr><td colspan="8" style="text-align:center;">No data available</td></tr>');
     }
+    
+    /**
+     * Remove empty table message
+     */
+    removeEmptyTableMessage() {
+        $('#statTable').find('tr:has(td)').remove();
+    }
 
     /**
      * Toggles between winrate and count display
@@ -321,16 +331,29 @@ class StatsApp {
             this.toggleView();
         });
 
-        $('#applyFiltersBtn').on('click', () => {
-            this.handleApplyFilters();
-        });
-
         $('#clearFiltersBtn').on('click', () => {
             this.handleClearFilters();
         });
         // Form toggle
         $('#toggleFormBtn').on('click', () => {
             this.ui.toggleForm();
+        });
+
+        // Apply filter on click
+        $('#applyFiltersBtn').on('click', () => {
+            this.handleApplyFilters();
+        });
+
+        $('#turnOrderFilter').on('click', () => {
+            this.handleApplyFilters();
+        });
+
+        $('#groupFilter').on('click', () => {
+            this.handleApplyFilters();
+        });
+
+        $('#expansionFilter').on('click', () => {
+            this.handleApplyFilters();
         });
     }
 }
