@@ -67,6 +67,8 @@ class MatchTracker {
      */
     initializeTable() {
         this.table = new DataTable('#data', {
+            lengthMenu: [5, 15 , 25, 50],
+            pageLength: 5,
             searching: false,
             order: [],
             data: this.data,
