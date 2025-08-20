@@ -112,7 +112,9 @@ class MatchTracker {
     /**
      * Refreshes table and win rate
      */
-    refreshDisplay() {
+    async refreshDisplay() {
+        await this.saveData();
+        await this.loadData(); // reload and sort data from db
         this.table.clear().rows.add(this.data).draw();
         this.updateWinRate();
     }

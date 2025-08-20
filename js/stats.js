@@ -4,10 +4,13 @@
 import DatabaseService from './database.js';
 import { GAME_DATA } from './config.js';
 import { GameUtils } from './utils.js';
+import { UIComponents } from './ui-components.js';
 
 class StatsApp {
     constructor() {
         this.db = new DatabaseService();
+        this.ui = new UIComponents();
+        this.ui.toggleForm();
         this.data = [];
         this.filteredData = [];
         this.showCounts = false; // false = winrate, true = counts
@@ -324,6 +327,10 @@ class StatsApp {
 
         $('#clearFiltersBtn').on('click', () => {
             this.handleClearFilters();
+        });
+        // Form toggle
+        $('#toggleFormBtn').on('click', () => {
+            this.ui.toggleForm();
         });
     }
 }

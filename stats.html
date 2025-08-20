@@ -56,8 +56,14 @@
         
         <!-- Filter Section -->
         <div class="bg-white shadow-lg rounded-lg p-4 mb-6">
-            <h3 class="text-lg font-semibold mb-4">Filters</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button id="toggleFormBtn" class="w-full text-left text-lg font-semibold mb-4 flex items-center justify-between focus:outline-none">
+                <span>Filter</span>
+                <svg id="toggleIcon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="formWrapper"> 
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block font-medium mb-2">Turn Order</label>
                     <div id="turnOrderFilter" class="space-y-2">
@@ -83,12 +89,11 @@
                 </button>
             </div>
         </div>
-        
-        <div class="bg-white shadow-lg rounded-lg overflow-x-auto p-4">
-            <table id="statTable" class="display w-full text-sm text-left text-gray-700">
-                <tbody class="divide-y divide-gray-200"></tbody>
-            </table>       
-        </div>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-x-auto p-4">
+        <table id="statTable" class="display w-full text-sm text-left text-gray-700">
+            <tbody class="divide-y divide-gray-200"></tbody>
+        </table>       
     </div>
 </body>
 </html>
