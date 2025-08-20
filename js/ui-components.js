@@ -203,11 +203,23 @@ export class UIComponents {
      * Updates today's win rate display
      * @param {Array} data 
      */
-    updateTodayWinRate(data) {
+    updateShowStats(data) {
         const todayGames = GameUtils.getTodayGames(data);
         const rate = GameUtils.calculateWinRate(todayGames);
         const displayRate = todayGames.length > 0 ? rate.toFixed(2) + '%' : '0.00%';
-        this.$('#todayWinRate').text(displayRate);
+        const totalGames = `${todayGames.length} game(s)`
+        this.$('#todayWinRate').text(`${displayRate} in ${totalGames}`);
+
+        let currentGroup = 'N/A';
+        if(data.length > 0) {
+            currentGroup = data[0].groupList || 'N/A';
+        }
+        this.$('#currentGroup').text(currentGroup);
+
+        const groupGames = GameUtils.getCurrentGameGroup(data, currentGroup);
+        const groupRate = GameUtils.calculateWinRate(groupGames);
+        const groupTotal = `${groupGames.length} game(s)`;
+        this.$('#groupWinRate').text(`${groupRate.toFixed(2)}% in ${groupTotal}`);
     }
 
     /**
@@ -268,7 +280,7 @@ export class TableRenderer {
                 data: null,
                 title: 'Action',
                 orderable: false,
-                render: (data, type, row, meta) => TableRenderer.renderActionCell(meta.row)
+                render: (data, type, row, meta) => TableRenderer.renderActionCell(data.id)
             }
         ];
     }

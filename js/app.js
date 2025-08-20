@@ -36,6 +36,7 @@ class MatchTracker {
             this.initializeFormDefaults();
             this.renderUI();
             this.updateWinRate();
+            console.log(this.data);
         } catch (error) {
             console.error('Failed to initialize application:', error);
             this.handleError(error);
@@ -108,7 +109,7 @@ class MatchTracker {
      * Updates win rate display
      */
     updateWinRate() {
-        this.ui.updateTodayWinRate(this.data);
+        this.ui.updateShowStats(this.data);
     }
 
     /**
@@ -165,9 +166,10 @@ class MatchTracker {
             return;
         }
 
-        this.data.splice(rowIndex, 1);
-        this.table.row(rowIndex).remove().draw();
-        this.updateWinRate();
+        // Delete data where id = rowIndex
+        this.data = this.data.filter(item => item.id !== rowIndex);
+
+        this.refreshDisplay();
         await this.saveData();
     }
 

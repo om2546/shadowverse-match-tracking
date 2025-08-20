@@ -63,6 +63,24 @@ export class GameUtils {
     }
 
     /**
+     * Select current game from group placed in current streak
+     * @param {Array} games
+     * @param {string} currentGroup
+     * @returns {Array} 
+     */
+    static getCurrentGameGroup(games,currentGroup){
+        var lastIndex = 0;
+        for(let i = 0 ; i < games.length; i++) {
+            lastIndex++;
+            if(games[i].groupList != currentGroup) {
+                lastIndex--;
+                break;
+            }
+        }
+        return games.slice(0, lastIndex);
+    }
+
+    /**
      * Creates a unique key for deduplication
      * @param {Object} game 
      * @returns {string}

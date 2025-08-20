@@ -199,6 +199,30 @@ class StatsApp {
                 title: "Player Class",
                 data: "playerClass",
                 render: (data) => this.renderPlayerClassCell(data)
+            },
+            {
+                title: "Total Games",
+                data: null,
+                render: (data, type, row) => {
+                    // Sum all games for this player class row
+                    var win = row.opponentClasses.reduce((sum, oc) => sum + oc.win, 0);
+                    var lose = row.opponentClasses.reduce((sum, oc) => sum + oc.lose, 0);
+                    if(type === 'sort') {
+                        return win + lose;
+                    }
+
+                    if(win+lose<=0){
+                        return `-`;
+                    }
+                    
+                    if(this.showCounts){
+                        return `${win}W / ${lose}L`;
+                    }
+                    else{
+                        return `<span>${win+lose}</span>`
+                    }
+                },
+                type: 'num'
             }
         ];
 
