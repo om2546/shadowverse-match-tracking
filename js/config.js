@@ -58,7 +58,8 @@ export const GAME_DATA = {
     
     EXPANSIONS: [
         'Legends Rise',
-        'Infinity Evolved'
+        'Infinity Evolved',
+        'Heirs of the Omen'
     ],
     
     GROUPS: [
